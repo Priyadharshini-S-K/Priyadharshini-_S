@@ -1,0 +1,73 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
+public class CustomerPage {
+
+    public CustomerPage(String username) {
+        JFrame f = new JFrame("Customer Page - Pet Shop buying System");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        JLabel welcomeLabel = new JLabel("Welcome, " + username + "!");
+        welcomeLabel.setBounds(500, 40, 900, 50);
+        welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        welcomeLabel.setForeground(Color.black);
+        f.add(welcomeLabel);
+
+        // Create buttons for each pet type with their respective images
+        JButton dogButton = createPetButton("Dog", "C:\\Users\\admin\\Pictures\\Saved Pictures\\doggyy.jpg");
+        dogButton.setBounds(150, 250, 200, 200);
+        f.add(dogButton);
+
+        JButton catButton = createPetButton("Cat", "C:\\Users\\admin\\Pictures\\Saved Pictures\\caty.jpg");
+        catButton.setBounds(500, 250, 200, 200);
+        f.add(catButton);
+
+        JButton birdButton = createPetButton("Bird", "C:\\Users\\admin\\Pictures\\Saved Pictures\\klq.jpg");
+        birdButton.setBounds(850, 250, 200, 200);
+        f.add(birdButton);
+
+        f.setLayout(null);
+        f.setVisible(true);
+    }
+
+    private JButton createPetButton(String petType, String imagePath) {
+        JButton button = new JButton();
+        try {
+            Image img = ImageIO.read(new File(imagePath));
+            button.setIcon(new ImageIcon(img.getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Open a new page specific to the pet type
+                if (petType.equalsIgnoreCase("Dog")) {
+                    new DogPage();
+                } else if (petType.equalsIgnoreCase("Cat")) {
+                    new CatPage();
+                } else if (petType.equalsIgnoreCase("Bird")) {
+                    new BirdPage();
+                }
+            }
+        });
+
+        return button;
+    }
+
+    public static void main(String[] args) {
+        // This is just for testing; the actual entry point is from NextPage
+        SwingUtilities.invokeLater(() -> new CustomerPage("testuser"));
+    }
+
+    public void setVisible(boolean b)
+    {
+    }
+}
